@@ -1,0 +1,117 @@
+---
+title             : "Indirect effect of sleep on abdominal pain through daytime dysfunction in adults with irritable bowel syndrome"
+shorttitle        : "Daytime function, sleep, and pain in IBS"
+
+author: 
+  - name          : "Anthony Cifre"
+    affiliation   : "1"
+    corresponding : yes    # Define only one corresponding author
+    address       : "Postal address"
+    email         : "my@email.com"
+    role:         # Contributorship roles (e.g., CRediT, https://casrai.org/credit/)
+      - "Conceptualization"
+      - "Writing - Original Draft Preparation"
+      - "Writing - Review & Editing"
+
+affiliation:
+  - id            : "1"
+    institution   : "University of Houston"
+
+
+authornote: |
+  Add complete departmental affiliations for each author here. Each new line herein must be indented, like this line.
+
+  Enter author note here.
+
+abstract: |
+  **Study Objectives**: Sleep deﬁciency, psychological distress, daytime dysfunction, and abdominal pain are common in adults with irritable bowel syndrome. Prior research on individuals with chronic pain has identiﬁed the indirect effect of sleep on pain through psychological distress or daytime dysfunction; however, this effect is less clear in irritable bowel syndrome. The purpose of this study was to examine potential indirect effects of sleep on abdominal pain symptoms simultaneously through psychological distress and daytime dysfunction in adults with irritable bowel syndrome.
+  
+  **Methods**: Daily symptoms of nighttime sleep complaints (sleep quality and refreshment), psychological distress, daytime dysfunction (fatigue, sleepiness, and difﬁculty concentrating), and abdominal pain were collected in baseline assessments from 2 randomized controlled trials of 332 adults (mean age 42 years and 85% female) with irritable bowel syndrome. Structural equation modeling was used to examine the global relationships among nighttime sleep complaints, psychological distress, daytime dysfunction, and abdominal pain.
+  
+  **Results**: The structural equation modeling analyses found a strong indirect effect of poor sleep on abdominal pain via daytime dysfunction but not psychological distress. More than 95% of the total effect of nighttime sleep complaints on abdominal pain was indirect.
+  
+  **Conclusions**: These ﬁndings suggest that the primary impact of nighttime sleep complaints on abdominal pain is indirect. The indirect effect appears primarily through daytime dysfunction. Such understanding provides a potential avenue to optimize personalized and hybrid behavioral interventions for adults with irritable bowel syndrome through addressing daytime dysfunction and sleep behaviors. Additional study integrating symptoms with biological markers is warranted to explore the underlying mechanisms accounting for these symptoms.
+  
+  <!-- https://tinyurl.com/ybremelq -->
+  
+keywords          : "irritable bowel syndrome, sleep, pain, daytime dysfunction, psychological distress"
+wordcount         : "X"
+
+bibliography      : "r-references.bib"
+
+floatsintext      : no
+linenumbers       : yes
+draft             : no
+mask              : no
+
+figurelist        : no
+tablelist         : no
+footnotelist      : no
+
+classoption       : "man"
+output            : papaja::apa6_pdf
+---
+
+```{r setup, include = FALSE}
+library("papaja")
+r_refs("r-references.bib")
+```
+
+```{r analysis-preferences}
+# Seed for random number generation
+set.seed(42)
+knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
+```
+
+```{r, include=FALSE}
+
+# lower <- '
+#  11.834
+#   6.947   9.364
+#   6.819   5.091  12.532
+#   4.783   5.028   7.495   9.986
+#  -3.839  -3.889  -3.841  -3.625  9.610
+# -21.899 -18.831 -21.748 -18.775 35.522 450.288 '
+
+
+lower <- '
+0.8											
+0.66	0.68										
+0.57	0.55	0.62									
+0.25	0.25	0.2	0.22								
+0.2	0.22	0.18	0.21	0.81							
+0.45	0.42	0.4	0.38	0.39	0.42						
+0.44	0.43	0.39	0.35	0.35	0.36	0.83					
+0.35	0.33	0.32	0.3	0.27	0.3	0.62	0.6				
+0.31	0.25	0.19	0.3	0.18	0.18	0.44	0.43	0.51			
+0.39	0.35	0.29	0.28	0.24	0.25	0.58	0.58	0.55	0.75		
+0.26	0.25	0.13	0.2	0.15	0.17	0.43	0.43	0.6	0.7	0.62 '	
+
+
+```
+
+
+# Methods
+We report how we determined our sample size, all data exclusions (if any), all manipulations, and all measures in the study. <!-- 21-word solution (Simmons, Nelson & Simonsohn, 2012; retrieved from http://ssrn.com/abstract=2160588) -->
+
+## Participants
+
+## Material
+
+## Procedure
+
+## Data analysis
+We used `r cite_r("r-references.bib")` for all our analyses.
+
+
+# Results
+
+# Discussion
+
+
+\newpage
+
+# References
+
+::: {#refs custom-style="Bibliography"}
+:::
