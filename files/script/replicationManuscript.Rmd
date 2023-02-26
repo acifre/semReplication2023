@@ -82,11 +82,17 @@ knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
 
 ```{r data-preparation, include=FALSE}
 # Declare vector with names of variables 
-names <- c("Abdominal pain", "Abdominal pain after eating", 
+full_names <- c("Abdominal pain", "Abdominal pain after eating", 
            "Abdominal distention", "Intestinal gas", 
            "Diminished sleep quality", "Unrefreshed sleep", "Fatigue", 
            "Sleepiness during the day", "Hard to concentrate", "Anxiety", 
            "Stress", "Depressive mood")
+
+names <- c("ab_pain", "ab_pain_after_eat", 
+           "ab_dist", "intest_gas", 
+           "dim_sleep_qual", "unrefresh_sleep", "fatigue", 
+           "sleepiness_day", "hard_concent", "anxiety", 
+           "stress", "dep_mood")
 
 # Import correlation matrix 
 cor_matrix <- as.matrix(read_csv("../../files/data/cor_matrix.csv", col_names = FALSE))
@@ -104,6 +110,26 @@ cov_matrix <- cor2cov(cor_matrix, sds = sds, names = names)
 ```
 
 ```{r model-specification, include=FALSE}
+
+sleep.model <- '
+  # latent variables 
+    abdominal_discomfort =~ ab_pain + ab_pain_after_eat + ab_dist + intest_gas
+    nightime_sleep =~ dim_sleep_qual + unrefresh_sleep
+    day_dysfunction =~ fatigue + sleepiness_day + hard_concent
+    psych_distress =~ anxiety + stress + dep_mood
+  # regressions
+    psych_distress ~ nightime_sleep
+    day_dysfunction ~ nightime_sleep + psych_distress
+    abdominal_discomfort ~ day_dysfunction + nightime_sleep + psych_distress
+'
+
+rownames(cov_matrix)
+colnames(cov_matrix)
+
+fit <- sem(sleep.model, 
+           sample.cov = cov_matrix, 
+           sample.nobs = 332)
+summary(fit, standardized = TRUE)
 
 ```
 
