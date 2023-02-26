@@ -53,43 +53,16 @@ output            : papaja::apa6_pdf
 ---
 
 ```{r setup, include = FALSE}
-library("papaja")
+
+# Load Required Packages
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load("dplyr", "foreign", "readxl", "tidyr", "rstatix", "tidyverse", 
+               "ggpubr", "lme4", "lmerTest", "car", "haven", "lavaan", "papaja")
+
+#options(scipen=0) # yes scientific notation
+#options(scipen=999) # no scientific notation
 r_refs("r-references.bib")
 ```
-
-```{r analysis-preferences}
-# Seed for random number generation
-set.seed(42)
-knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
-```
-
-```{r, include=FALSE}
-
-# lower <- '
-#  11.834
-#   6.947   9.364
-#   6.819   5.091  12.532
-#   4.783   5.028   7.495   9.986
-#  -3.839  -3.889  -3.841  -3.625  9.610
-# -21.899 -18.831 -21.748 -18.775 35.522 450.288 '
-
-
-lower <- '
-0.8											
-0.66	0.68										
-0.57	0.55	0.62									
-0.25	0.25	0.2	0.22								
-0.2	0.22	0.18	0.21	0.81							
-0.45	0.42	0.4	0.38	0.39	0.42						
-0.44	0.43	0.39	0.35	0.35	0.36	0.83					
-0.35	0.33	0.32	0.3	0.27	0.3	0.62	0.6				
-0.31	0.25	0.19	0.3	0.18	0.18	0.44	0.43	0.51			
-0.39	0.35	0.29	0.28	0.24	0.25	0.58	0.58	0.55	0.75		
-0.26	0.25	0.13	0.2	0.15	0.17	0.43	0.43	0.6	0.7	0.62 '	
-
-
-```
-
 
 # Methods
 We report how we determined our sample size, all data exclusions (if any), all manipulations, and all measures in the study. <!-- 21-word solution (Simmons, Nelson & Simonsohn, 2012; retrieved from http://ssrn.com/abstract=2160588) -->
@@ -101,6 +74,42 @@ We report how we determined our sample size, all data exclusions (if any), all m
 ## Procedure
 
 ## Data analysis
+
+```{r analysis-preferences}
+# Seed for random number generation
+set.seed(42)
+knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
+```
+
+```{r data-preparation, include=FALSE}
+# Declare vector with names of variables 
+names <- c("Abdominal pain", "Abdominal pain after eating", 
+           "Abdominal distention", "Intestinal gas", 
+           "Diminished sleep quality", "Unrefreshed sleep", "Fatigue", 
+           "Sleepiness during the day", "Hard to concentrate", "Anxiety", 
+           "Stress", "Depressive mood")
+
+# Import correlation matrix 
+cor_matrix <- as.matrix(read_csv("../../files/data/cor_matrix.csv", col_names = FALSE))
+  
+
+# Declare vector with standard deviations for each variable 
+sds <- c(26.05, 26.01, 31.82, 
+         30.05, 27.18, 27.15, 
+         27.25, 25.79, 20.77, 
+         22.41, 25.44, 16.51)
+
+
+# Convert correlation matrix to covariance matrix
+cov_matrix <- cor2cov(cor_matrix, sds = sds, names = names)
+```
+
+```{r model-specification, include=FALSE}
+
+```
+
+
+
 We used `r cite_r("r-references.bib")` for all our analyses.
 
 
