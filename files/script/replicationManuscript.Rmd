@@ -109,22 +109,20 @@ sds <- c(26.05, 26.01, 31.82,
 cov_matrix <- cor2cov(cor_matrix, sds = sds, names = names)
 ```
 
-```{r model-specification, include=FALSE}
+```{r model-specification, include=TRUE}
 
 sleep.model <- '
-  # latent variables 
+  # latent variables ||  Y1 is measured by X1 + X2 + X3
     abdominal_discomfort =~ ab_pain + ab_pain_after_eat + ab_dist + intest_gas
     nightime_sleep =~ dim_sleep_qual + unrefresh_sleep
     day_dysfunction =~ fatigue + sleepiness_day + hard_concent
     psych_distress =~ anxiety + stress + dep_mood
-  # regressions
+  # regressions || Y1 regressed on X1 
     psych_distress ~ nightime_sleep
     day_dysfunction ~ nightime_sleep + psych_distress
     abdominal_discomfort ~ day_dysfunction + nightime_sleep + psych_distress
+  
 '
-
-rownames(cov_matrix)
-colnames(cov_matrix)
 
 fit <- sem(sleep.model, 
            sample.cov = cov_matrix, 
@@ -132,6 +130,58 @@ fit <- sem(sleep.model,
 summary(fit, standardized = TRUE)
 
 ```
+
+```{r}
+med.model <- '   
+  # latent variables ||  Y1 is measured by X1 + X2 + X3
+    abdominal_discomfort =~ ab_pain + ab_pain_after_eat + ab_dist + intest_gas
+    nightime_sleep =~ dim_sleep_qual + unrefresh_sleep
+    day_dysfunction =~ fatigue + sleepiness_day + hard_concent
+    psych_distress =~ anxiety + stress + dep_mood
+  # mediation
+  ## outcome model 
+  abdominal_discomfort  ~ c*nightime_sleep + b1*psych_distress + b2*day_dysfunction
+  
+  ## mediator models
+  psych_distress ~ a1*nightime_sleep
+  day_dysfunction ~ a2*nightime_sleep
+  
+  ## indirect effects (IDE)
+  psych_distress_IDE  := a1*b1
+  day_dysfunction_IDE  := a2*b2
+  sumIDE := (a1*b1) + (a2*b2)
+  
+  ## total effect
+  total := c + (a1*b1) + (a2*b2)
+  psych_distress ~~ day_dysfunction # model correlation between mediators
+'
+# 
+# model <- '
+# # outcome model 
+# abdominal_discomfort  ~ c*nightime_sleep + b1*psych_distress + b2*day_dysfunction
+# 
+# # mediator models
+# psych_distress ~ a1*nightime_sleep
+# day_dysfunction ~ a2*nightime_sleep
+# 
+# # indirect effects (IDE)
+# psych_distress_IDE  := a1*b1
+# day_dysfunction_IDE  := a2*b2
+# sumIDE := (a1*b1) + (a2*b2)
+# 
+# # total effect
+# total := c + (a1*b1) + (a2*b2)
+# psych_distress ~~ day_dysfunction # model correlation between mediators
+# '
+
+med.fit <- sem(med.model, 
+           sample.cov = cov_matrix, 
+           sample.nobs = 332)
+summary(med.fit, fit.measures = TRUE, standardized = TRUE, rsquare = TRUE)
+
+
+```
+
 
 
 
