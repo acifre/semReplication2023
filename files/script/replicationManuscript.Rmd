@@ -111,13 +111,18 @@ cov_matrix <- cor2cov(cor_matrix, sds = sds, names = names)
 
 ```{r model-specification, include=TRUE}
 
-sleep.model <- '
+measurement_model <- '
   # latent variables ||  Y1 is measured by X1 + X2 + X3
     abdominal_discomfort =~ ab_pain + ab_pain_after_eat + ab_dist + intest_gas
+    
     nightime_sleep =~ dim_sleep_qual + unrefresh_sleep
+    
     day_dysfunction =~ fatigue + sleepiness_day + hard_concent
+    
     psych_distress =~ anxiety + stress + dep_mood
+    
   # regressions || Y1 regressed on X1 
+  
     psych_distress ~ nightime_sleep
     day_dysfunction ~ nightime_sleep + psych_distress
     abdominal_discomfort ~ day_dysfunction + nightime_sleep + psych_distress

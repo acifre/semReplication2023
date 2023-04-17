@@ -233,6 +233,211 @@ We report how we determined our sample size, all data exclusions (if any), all m
 \hypertarget{data-analysis}{%
 \subsection{Data analysis}\label{data-analysis}}
 
+\begin{verbatim}
+## lavaan 0.6.14 ended normally after 249 iterations
+## 
+##   Estimator                                         ML
+##   Optimization method                           NLMINB
+##   Number of model parameters                        30
+## 
+##   Number of observations                           332
+## 
+## Model Test User Model:
+##                                                       
+##   Test statistic                               173.087
+##   Degrees of freedom                                48
+##   P-value (Chi-square)                           0.000
+## 
+## Parameter Estimates:
+## 
+##   Standard errors                             Standard
+##   Information                                 Expected
+##   Information saturated (h1) model          Structured
+## 
+## Latent Variables:
+##                           Estimate  Std.Err  z-value  P(>|z|)   Std.lv  Std.all
+##   abdominal_discomfort =~                                                      
+##     ab_pain                  1.000                              23.044    0.886
+##     ab_pain_aftr_t           0.997    0.048   20.925    0.000   22.966    0.884
+##     ab_dist                  1.067    0.062   17.132    0.000   24.585    0.774
+##     intest_gas               0.866    0.063   13.693    0.000   19.966    0.665
+##   nightime_sleep =~                                                            
+##     dim_sleep_qual           1.000                              23.921    0.881
+##     unrefresh_slep           1.041    0.087   11.998    0.000   24.912    0.919
+##   day_dysfunction =~                                                           
+##     fatigue                  1.000                              24.987    0.918
+##     sleepiness_day           0.921    0.040   22.824    0.000   23.015    0.894
+##     hard_concent             0.575    0.038   15.035    0.000   14.369    0.693
+##   psych_distress =~                                                            
+##     anxiety                  1.000                              19.303    0.863
+##     stress                   1.145    0.062   18.365    0.000   22.106    0.870
+##     dep_mood                 0.649    0.041   15.682    0.000   12.519    0.759
+## 
+## Regressions:
+##                          Estimate  Std.Err  z-value  P(>|z|)   Std.lv  Std.all
+##   psych_distress ~                                                            
+##     nightime_sleep          0.215    0.049    4.343    0.000    0.266    0.266
+##   day_dysfunction ~                                                           
+##     nightime_sleep          0.327    0.052    6.341    0.000    0.313    0.313
+##     psych_distress          0.759    0.068   11.094    0.000    0.586    0.586
+##   abdominal_discomfort ~                                                      
+##     day_dysfunctin          0.445    0.080    5.561    0.000    0.483    0.483
+##     nightime_sleep          0.038    0.059    0.650    0.516    0.040    0.040
+##     psych_distress          0.091    0.093    0.977    0.328    0.076    0.076
+## 
+## Variances:
+##                    Estimate  Std.Err  z-value  P(>|z|)   Std.lv  Std.all
+##    .ab_pain         145.553   18.979    7.669    0.000  145.553    0.215
+##    .ab_pain_aftr_t  147.024   18.981    7.746    0.000  147.024    0.218
+##    .ab_dist         405.029   37.289   10.862    0.000  405.029    0.401
+##    .intest_gas      501.627   42.403   11.830    0.000  501.627    0.557
+##    .dim_sleep_qual  164.290   44.995    3.651    0.000  164.290    0.223
+##    .unrefresh_slep  114.302   47.630    2.400    0.016  114.302    0.156
+##    .fatigue         115.979   19.106    6.070    0.000  115.979    0.157
+##    .sleepiness_day  133.453   17.777    7.507    0.000  133.453    0.201
+##    .hard_concent    223.624   18.923   11.818    0.000  223.624    0.520
+##    .anxiety         128.105   16.616    7.710    0.000  128.105    0.256
+##    .stress          156.572   21.218    7.379    0.000  156.572    0.243
+##    .dep_mood        115.038   10.850   10.602    0.000  115.038    0.423
+##    .abdmnl_dscmfrt  366.932   39.069    9.392    0.000    0.691    0.691
+##     nightime_sleep  572.237   70.479    8.119    0.000    1.000    1.000
+##    .day_dysfunctin  287.565   32.696    8.795    0.000    0.461    0.461
+##    .psych_distress  346.157   37.471    9.238    0.000    0.929    0.929
+\end{verbatim}
+
+\begin{verbatim}
+## lavaan 0.6.14 ended normally after 326 iterations
+## 
+##   Estimator                                         ML
+##   Optimization method                           NLMINB
+##   Number of model parameters                        30
+## 
+##   Number of observations                           332
+## 
+## Model Test User Model:
+##                                                       
+##   Test statistic                               173.087
+##   Degrees of freedom                                48
+##   P-value (Chi-square)                           0.000
+## 
+## Model Test Baseline Model:
+## 
+##   Test statistic                              2636.350
+##   Degrees of freedom                                66
+##   P-value                                        0.000
+## 
+## User Model versus Baseline Model:
+## 
+##   Comparative Fit Index (CFI)                    0.951
+##   Tucker-Lewis Index (TLI)                       0.933
+## 
+## Loglikelihood and Information Criteria:
+## 
+##   Loglikelihood user model (H0)             -17271.666
+##   Loglikelihood unrestricted model (H1)     -17185.122
+##                                                       
+##   Akaike (AIC)                               34603.332
+##   Bayesian (BIC)                             34717.486
+##   Sample-size adjusted Bayesian (SABIC)      34622.325
+## 
+## Root Mean Square Error of Approximation:
+## 
+##   RMSEA                                          0.089
+##   90 Percent confidence interval - lower         0.075
+##   90 Percent confidence interval - upper         0.103
+##   P-value H_0: RMSEA <= 0.050                    0.000
+##   P-value H_0: RMSEA >= 0.080                    0.848
+## 
+## Standardized Root Mean Square Residual:
+## 
+##   SRMR                                           0.050
+## 
+## Parameter Estimates:
+## 
+##   Standard errors                             Standard
+##   Information                                 Expected
+##   Information saturated (h1) model          Structured
+## 
+## Latent Variables:
+##                           Estimate  Std.Err  z-value  P(>|z|)   Std.lv  Std.all
+##   abdominal_discomfort =~                                                      
+##     ab_pain                  1.000                              23.044    0.886
+##     ab_pain_aftr_t           0.997    0.048   20.925    0.000   22.966    0.884
+##     ab_dist                  1.067    0.062   17.132    0.000   24.585    0.774
+##     intest_gas               0.866    0.063   13.693    0.000   19.966    0.665
+##   nightime_sleep =~                                                            
+##     dim_sleep_qual           1.000                              23.921    0.881
+##     unrefresh_slep           1.041    0.087   11.998    0.000   24.912    0.919
+##   day_dysfunction =~                                                           
+##     fatigue                  1.000                              24.987    0.918
+##     sleepiness_day           0.921    0.040   22.824    0.000   23.015    0.894
+##     hard_concent             0.575    0.038   15.035    0.000   14.369    0.693
+##   psych_distress =~                                                            
+##     anxiety                  1.000                              19.303    0.863
+##     stress                   1.145    0.062   18.365    0.000   22.106    0.870
+##     dep_mood                 0.649    0.041   15.682    0.000   12.519    0.759
+## 
+## Regressions:
+##                          Estimate  Std.Err  z-value  P(>|z|)   Std.lv  Std.all
+##   abdominal_discomfort ~                                                      
+##     nghtm_slp  (c)          0.038    0.059    0.650    0.516    0.040    0.040
+##     psych_dst (b1)          0.091    0.093    0.977    0.328    0.076    0.076
+##     dy_dysfnc (b2)          0.445    0.080    5.561    0.000    0.483    0.483
+##   psych_distress ~                                                            
+##     nghtm_slp (a1)          0.215    0.049    4.343    0.000    0.266    0.266
+##   day_dysfunction ~                                                           
+##     nghtm_slp (a2)          0.490    0.061    8.003    0.000    0.469    0.469
+## 
+## Covariances:
+##                      Estimate  Std.Err  z-value  P(>|z|)   Std.lv  Std.all
+##  .day_dysfunction ~~                                                      
+##    .psych_distress    262.755   31.409    8.366    0.000    0.640    0.640
+## 
+## Variances:
+##                    Estimate  Std.Err  z-value  P(>|z|)   Std.lv  Std.all
+##    .ab_pain         145.553   18.979    7.669    0.000  145.553    0.215
+##    .ab_pain_aftr_t  147.024   18.981    7.746    0.000  147.024    0.218
+##    .ab_dist         405.029   37.289   10.862    0.000  405.029    0.401
+##    .intest_gas      501.627   42.403   11.830    0.000  501.627    0.557
+##    .dim_sleep_qual  164.290   44.995    3.651    0.000  164.290    0.223
+##    .unrefresh_slep  114.302   47.630    2.400    0.016  114.302    0.156
+##    .fatigue         115.979   19.106    6.070    0.000  115.979    0.157
+##    .sleepiness_day  133.453   17.777    7.507    0.000  133.453    0.201
+##    .hard_concent    223.624   18.923   11.818    0.000  223.624    0.520
+##    .anxiety         128.105   16.616    7.710    0.000  128.105    0.256
+##    .stress          156.572   21.218    7.379    0.000  156.572    0.243
+##    .dep_mood        115.038   10.850   10.602    0.000  115.038    0.423
+##    .abdmnl_dscmfrt  366.932   39.069    9.392    0.000    0.691    0.691
+##     nightime_sleep  572.237   70.479    8.119    0.000    1.000    1.000
+##    .day_dysfunctin  487.012   48.452   10.051    0.000    0.780    0.780
+##    .psych_distress  346.157   37.471    9.238    0.000    0.929    0.929
+## 
+## R-Square:
+##                    Estimate
+##     ab_pain           0.785
+##     ab_pain_aftr_t    0.782
+##     ab_dist           0.599
+##     intest_gas        0.443
+##     dim_sleep_qual    0.777
+##     unrefresh_slep    0.844
+##     fatigue           0.843
+##     sleepiness_day    0.799
+##     hard_concent      0.480
+##     anxiety           0.744
+##     stress            0.757
+##     dep_mood          0.577
+##     abdmnl_dscmfrt    0.309
+##     day_dysfunctin    0.220
+##     psych_distress    0.071
+## 
+## Defined Parameters:
+##                    Estimate  Std.Err  z-value  P(>|z|)   Std.lv  Std.all
+##     psych_dstr_IDE    0.019    0.020    0.955    0.340    0.020    0.020
+##     dy_dysfnct_IDE    0.218    0.047    4.612    0.000    0.226    0.226
+##     sumIDE            0.238    0.041    5.729    0.000    0.247    0.247
+##     total             0.276    0.058    4.750    0.000    0.286    0.286
+\end{verbatim}
+
 We used R (Version 4.2.2; R Core Team, 2022b) and the R-packages \emph{car} (Version 3.1.1; Fox \& Weisberg, 2019; Fox, Weisberg, \& Price, 2022), \emph{carData} (Version 3.0.5; Fox et al., 2022), \emph{dplyr} (Version 1.1.0; Wickham, François, Henry, Müller, \& Vaughan, 2023), \emph{forcats} (Version 1.0.0; Wickham, 2023), \emph{foreign} (Version 0.8.84; R Core Team, 2022a), \emph{ggplot2} (Version 3.4.1; Wickham, 2016), \emph{ggpubr} (Version 0.6.0; Kassambara, 2023a), \emph{haven} (Version 2.5.1; Wickham, Miller, \& Smith, 2022), \emph{lavaan} (Version 0.6.14; Rosseel, 2012), \emph{lme4} (Version 1.1.31; Bates, Mächler, Bolker, \& Walker, 2015), \emph{lmerTest} (Version 3.1.3; Kuznetsova, Brockhoff, \& Christensen, 2017), \emph{Matrix} (Version 1.5.3; Bates, Maechler, \& Jagan, 2022), \emph{pacman} (Version 0.5.1; Rinker \& Kurkiewicz, 2018), \emph{papaja} (Version 0.1.1; Aust \& Barth, 2022), \emph{purrr} (Version 1.0.1; Wickham \& Henry, 2023), \emph{readr} (Version 2.1.4; Wickham, Hester, \& Bryan, 2023), \emph{readxl} (Version 1.4.2; Wickham \& Bryan, 2023), \emph{rstatix} (Version 0.7.2; Kassambara, 2023b), \emph{stringr} (Version 1.5.0; Wickham, 2022), \emph{tibble} (Version 3.1.8; Müller \& Wickham, 2022), \emph{tidyr} (Version 1.3.0; Wickham, Vaughan, \& Girlich, 2023), \emph{tidyverse} (Version 1.3.2; Wickham et al., 2019), and \emph{tinylabels} (Version 0.2.3; Barth, 2022) for all our analyses.
 
 \hypertarget{results}{%
