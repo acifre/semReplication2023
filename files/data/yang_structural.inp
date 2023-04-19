@@ -1,0 +1,80 @@
+TITLE: Yang et al
+
+DATA: 
+    ! This is a comment
+  FILE IS "cov_matrix.csv";
+    ! You can also specify a complete path to the directory that contains the data-file.
+  TYPE IS FULLCOV;
+    ! Mplus can read many different "TYPE"s of data.
+    ! Find the chapter and section with the description
+  NOBSERVATIONS = 332;
+ 
+VARIABLE:
+  NAMES ARE AP, APAE, AD, IG, DSQ, US, FT, SD, HC, AX, ST, DM; 
+  ! NAMES are the variables incldued in the DATA FILE above.
+  USEVARIABLES ARE AP, APAE, AD, IG, DSQ, US, FT, SD, HC, AX, ST, DM;
+  ! USEVARIABLES allows you to EXCLUDE variables from analysis.
+
+ANALYSIS:
+    ! Mplus allows MANY different types of analysis
+    ! Skim through the chapter with descriptions of various analyses 
+    ! PAY particular attention to available Estimators, Options and Restrictions
+  TYPE IS GENERAL;
+  ESTIMATOR IS ML;
+
+MODEL:
+! This section should include SEMScript with ALL its nuances.
+! 1. Always specify the measurement model first.
+! 2. First factor-loading for each LV is fixed to 1.0 to set the scale
+! 3. ONE line per parameter
+! 4. Mind the punctuation (semi-colon)
+! 5. ALWAYS use a parameter-label. Must correspond to the label in the path-diagram 
+
+! Measurement model (free,fixed)
+
+ABDISCOM by AP;
+ABDISCOM by APAE;
+ABDISCOM by AD;
+ABDISCOM by IG;
+NIGHTSLEEP by DSQ;
+NIGHTSLEEP by US;
+DAYFUNC by FT;
+DAYFUNC by SD;
+DAYFUNC by HC;
+PSYSTRESS by AX;
+PSYSTRESS by ST;
+PSYSTRESS by DM;
+
+! Structural model  (free, fixed)
+
+NIGHTSLEEP ON PSYSTRESS (beta_1_2);
+NIGHTSLEEP ON ABDISCOM (beta_1_3);
+NIGHTSLEEP ON DAYFUNC (beta_1_4);
+DAYFUNC ON ABDISCOM (beta_4_3);
+PSYSTRESS ON DAYFUNC (beta_2_4);
+
+! Latent variable covariances (#free): 
+
+! Observed residual-variances (#free): 
+
+AP;
+APAE;
+AD;
+IG; 
+DSQ; 
+US; 
+FT; 
+SD; 
+HC; 
+AX; 
+ST; 
+DM;
+
+! TOTAL NUMBER of estimated paramters  51
+! TOTAL elements in the covariance matrix
+! Degrees of freedom 48
+
+
+OUTPUT:  SAMPSTAT RESIDUAL STANDARDIZED;
+! Mplus allows many output options.
+! Read through the chapter to 

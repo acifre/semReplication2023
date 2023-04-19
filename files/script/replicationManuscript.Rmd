@@ -67,17 +67,21 @@ knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
 
 ```{r data-preparation, echo=TRUE, tidy=T}
 # Declare vector with names of variables 
-full_names <- c("Abdominal pain", "Abdominal pain after eating", 
-           "Abdominal distention", "Intestinal gas", 
-           "Diminished sleep quality", "Unrefreshed sleep", "Fatigue", 
-           "Sleepiness during the day", "Hard to concentrate", "Anxiety", 
-           "Stress", "Depressive mood")
+full_names <- c("Abdominal pain (AP)", "Abdominal pain after eating (APAE)", 
+           "Abdominal distention (AD)", "Intestinal gas (IG)", 
+           "Diminished sleep quality (DSQ)", "Unrefreshed sleep (US)", "Fatigue (FT)", 
+           "Sleepiness during the day (SD)", "Hard to concentrate (HC)", "Anxiety (AX)",
+           "Stress (ST)", "Depressive mood (DM)")
 
 names <- c("ab_pain", "ab_pain_after_eat", 
            "ab_dist", "intest_gas", 
            "dim_sleep_qual", "unrefresh_sleep", "fatigue", 
            "sleepiness_day", "hard_concent", "anxiety", 
            "stress", "dep_mood")
+
+mplus_names <- c("AP", "APAE", "AD", "IG", 
+                 "DSQ", "US", "FT", "SD", 
+                 "HC", "AX", "ST", "DM")
 
 # Import correlation matrix 
 cor_matrix <- as.matrix(read_csv("../../files/data/cor_matrix.csv", col_names = FALSE))
@@ -89,7 +93,8 @@ sds <- c(26.05, 26.01, 31.82,
          22.41, 25.44, 16.51)
 
 # Convert correlation matrix to covariance matrix using standard deviations
-cov_matrix <- cor2cov(cor_matrix, sds = sds, names = names)
+cov_matrix <- cor2cov(cor_matrix, sds = sds, names = mplus_names)
+mplus_matrix <- cor2cov(cor_matrix, sds = sds, names = mplus_names)
 
 write.csv(cov_matrix, "../../files/data/cov_matrix.csv")
 ```
@@ -103,66 +108,84 @@ write.csv(cov_matrix, "../../files/data/cov_matrix.csv")
 measurement_model <- '
   # Latent variables ||  Y1 is measured by X1 + X2 + X3
   
-    abdominal_discomfort =~ ab_pain + ab_pain_after_eat + ab_dist + intest_gas
-    nightime_sleep =~ dim_sleep_qual + unrefresh_sleep
-    day_dysfunction =~ fatigue + sleepiness_day + hard_concent
-    psych_distress =~ anxiety + stress + dep_mood
-    
+    ABDISCOM =~ AP + APAE + AD + IG
+    NIGHTSLEEP =~ DSQ + US
+    DAYFUNC =~ FT + SD + HC
+    PSYSTRESS =~ AX + ST + DM
     
   # Covariances
     
-    abdominal_discomfort ~~ nightime_sleep
-    abdominal_discomfort ~~ day_dysfunction
-    abdominal_discomfort ~~ psych_distress
-    nightime_sleep ~~ day_dysfunction
-    nightime_sleep ~~ psych_distress
-    day_dysfunction ~~ psych_distress
+    ABDISCOM ~~ NIGHTSLEEP
+    ABDISCOM ~~ DAYFUNC
+    ABDISCOM ~~ PSYSTRESS
+    NIGHTSLEEP ~~ DAYFUNC
+    NIGHTSLEEP ~~ PSYSTRESS
+    DAYFUNC ~~ PSYSTRESS
     
-
+  # Observed Variances
+  
+    AP ~~ AP
+    APAE ~~ APAE
+    AD ~~ AD
+    IG ~~ IG
+    DSQ ~~ DSQ
+    US ~~ US
+    FT ~~ FT
+    SD ~~ SD
+    HC ~~ HC
+    AX ~~ AX
+    ST ~~ ST
+    DM ~~ DM
     
 '
 
 fit <- sem(measurement_model, 
            sample.cov = cov_matrix, 
            sample.nobs = 332)
-summary(fit, standardized = TRUE)
 
-# 
-#   # Regressions || Y1 regressed on X1 
-#   
-#     psych_distress ~ nightime_sleep
-#     day_dysfunction ~ nightime_sleep + psych_distress
-#     abdominal_discomfort ~ day_dysfunction + nightime_sleep + psych_distress
+# To get unstandardized standard error for factor loadings
+print(standardizedSolution(fit, type = "std.lv", output = "pretty"))
 
+# To get standardized results
+summary(fit, fit.measures = TRUE, standardized = TRUE)
 
 
 ```
 
 ```{r, include=TRUE}
-int_structural_model <- '   
+
+structural_model <- '   
   # Latent variables ||  Y1 is measured by X1 + X2 + X3
   
-    abdominal_discomfort =~ ab_pain + ab_pain_after_eat + ab_dist + intest_gas
-    nightime_sleep =~ dim_sleep_qual + unrefresh_sleep
-    day_dysfunction =~ fatigue + sleepiness_day + hard_concent
-    psych_distress =~ anxiety + stress + dep_mood
+    ABDISCOM =~ AP + APAE + AD + IG
+    NIGHTSLEEP =~ DSQ + US
+    DAYFUNC =~ FT + SD + HC
+    PSYSTRESS =~ AX + ST + DM
   
-  # mediation
-  ## outcome model 
-  abdominal_discomfort  ~ c*nightime_sleep + b1*psych_distress + b2*day_dysfunction
+  # Structural Model
   
-  ## mediator models
-  psych_distress ~ a1*nightime_sleep
-  day_dysfunction ~ a2*nightime_sleep
+    ABDISCOM ~ NIGHTSLEEP
+    ABDISCOM ~ PSYSTRESS
+    ABDISCOM ~ DAYFUNC
+    DAYFUNC ~ PSYSTRESS
+    DAYFUNC ~ NIGHTSLEEP
+    PSYSTRESS ~ NIGHTSLEEP
   
-  ## indirect effects (IDE)
-  psych_distress_IDE  := a1*b1
-  day_dysfunction_IDE  := a2*b2
-  sumIDE := (a1*b1) + (a2*b2)
+  # Observed Variances
   
-  ## total effect
-  total := c + (a1*b1) + (a2*b2)
-  psych_distress ~~ day_dysfunction # model correlation between mediators
+    AP ~~ AP
+    APAE ~~ APAE
+    AD ~~ AD
+    IG ~~ IG
+    DSQ ~~ DSQ
+    US ~~ US
+    FT ~~ FT
+    SD ~~ SD
+    HC ~~ HC
+    AX ~~ AX
+    ST ~~ ST
+    DM ~~ DM
+  
 '
 # 
 # model <- '
@@ -183,15 +206,23 @@ int_structural_model <- '
 # psych_distress ~~ day_dysfunction # model correlation between mediators
 # '
 
-initial_fit <- sem(int_structural_model, 
+structural_fit <- sem(structural_model, 
            sample.cov = cov_matrix, 
            sample.nobs = 332)
-summary(initial_fit, fit.measures = TRUE, standardized = TRUE, rsquare = TRUE)
+summary(structural_fit, fit.measures = TRUE, standardized = TRUE, rsquare = TRUE)
 
 
 ```
 
+<!-- ```{r mplus conversion, include=FALSE} -->
 
+<!-- mplus_model <- mplus2lavaan("../../files/data/yang_structural.inp", run = TRUE) -->
+
+<!-- mplus_fit <- sem(mplus_model,  -->
+<!--            sample.cov = mplus_matrix,  -->
+<!--            sample.nobs = 332) -->
+<!-- summary(mplus_fit, fit.measures = TRUE, standardized = TRUE, rsquare = TRUE) -->
+<!-- ``` -->
 
 
 I used `r cite_r("r-references.bib")` for all analyses.
