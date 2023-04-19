@@ -90,6 +90,8 @@ sds <- c(26.05, 26.01, 31.82,
 
 # Convert correlation matrix to covariance matrix using standard deviations
 cov_matrix <- cor2cov(cor_matrix, sds = sds, names = names)
+
+write.csv(cov_matrix, "../../files/data/cov_matrix.csv")
 ```
 
 ### Model Specification
@@ -138,7 +140,8 @@ summary(fit, standardized = TRUE)
 
 ```{r, include=TRUE}
 int_structural_model <- '   
-  # latent variables ||  Y1 is measured by X1 + X2 + X3
+  # Latent variables ||  Y1 is measured by X1 + X2 + X3
+  
     abdominal_discomfort =~ ab_pain + ab_pain_after_eat + ab_dist + intest_gas
     nightime_sleep =~ dim_sleep_qual + unrefresh_sleep
     day_dysfunction =~ fatigue + sleepiness_day + hard_concent
