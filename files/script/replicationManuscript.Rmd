@@ -1,36 +1,23 @@
 ---
-title             : "Indirect effect of sleep on abdominal pain through daytime dysfunction in adults with irritable bowel syndrome"
-shorttitle        : "Daytime function, sleep, and pain in IBS"
+title             : "SEM Replication: Indirect effect of sleep on abdominal pain through daytime dysfunction in adults with irritable bowel syndrome"
+shorttitle        : "SEM Replication"
 
 author: 
   - name          : "Anthony Cifre"
     affiliation   : "1"
     corresponding : yes    # Define only one corresponding author
-    address       : "Postal address"
-    email         : "my@email.com"
-    role:         # Contributorship roles (e.g., CRediT, https://casrai.org/credit/)
-      - "Conceptualization"
-      - "Writing - Original Draft Preparation"
-      - "Writing - Review & Editing"
+
 
 affiliation:
   - id            : "1"
     institution   : "University of Houston"
 
 
-authornote: |
-  Add complete departmental affiliations for each author here. Each new line herein must be indented, like this line.
 
-  Enter author note here.
 
 abstract: |
-  **Study Objectives**: Sleep deﬁciency, psychological distress, daytime dysfunction, and abdominal pain are common in adults with irritable bowel syndrome. Prior research on individuals with chronic pain has identiﬁed the indirect effect of sleep on pain through psychological distress or daytime dysfunction; however, this effect is less clear in irritable bowel syndrome. The purpose of this study was to examine potential indirect effects of sleep on abdominal pain symptoms simultaneously through psychological distress and daytime dysfunction in adults with irritable bowel syndrome.
-  
-  **Methods**: Daily symptoms of nighttime sleep complaints (sleep quality and refreshment), psychological distress, daytime dysfunction (fatigue, sleepiness, and difﬁculty concentrating), and abdominal pain were collected in baseline assessments from 2 randomized controlled trials of 332 adults (mean age 42 years and 85% female) with irritable bowel syndrome. Structural equation modeling was used to examine the global relationships among nighttime sleep complaints, psychological distress, daytime dysfunction, and abdominal pain.
-  
-  **Results**: The structural equation modeling analyses found a strong indirect effect of poor sleep on abdominal pain via daytime dysfunction but not psychological distress. More than 95% of the total effect of nighttime sleep complaints on abdominal pain was indirect.
-  
-  **Conclusions**: These ﬁndings suggest that the primary impact of nighttime sleep complaints on abdominal pain is indirect. The indirect effect appears primarily through daytime dysfunction. Such understanding provides a potential avenue to optimize personalized and hybrid behavioral interventions for adults with irritable bowel syndrome through addressing daytime dysfunction and sleep behaviors. Additional study integrating symptoms with biological markers is warranted to explore the underlying mechanisms accounting for these symptoms.
+  The study aimed to examine the potential indirect effects of sleep on abdominal pain symptoms simultaneously through psychological distress and daytime dysfunction in adults with irritable bowel syndrome (IBS). Daily symptoms of sleep, psychological distress, daytime dysfunction, and abdominal pain were collected from 332 adults with IBS. The study found that poor sleep had a strong indirect effect on abdominal pain via daytime dysfunction but not psychological distress. These findings suggest that optimizing personalized and hybrid behavioral interventions for adults with IBS should focus on addressing daytime dysfunction and sleep behaviors. Further studies integrating symptoms with biological markers are needed to explore the underlying mechanisms accounting for these symptoms.
+  I will attempt to replicate the study findings...
   
   <!-- https://tinyurl.com/ybremelq -->
   
@@ -40,7 +27,7 @@ wordcount         : "X"
 bibliography      : "r-references.bib"
 
 floatsintext      : no
-linenumbers       : yes
+linenumbers       : no
 draft             : no
 mask              : no
 
@@ -63,16 +50,12 @@ pacman::p_load("tidyverse", "lavaan", "papaja")
 r_refs("r-references.bib")
 ```
 
+This project focuses on irritable bowel syndrome (IBS), a chronic functional bowel disorder that affects a significant proportion of the population worldwide. IBS is characterized by abdominal pain or discomfort related to defecation or changes in bowel habits. Individuals with IBS experience gastrointestinal symptoms like abdominal pain, constipation or diarrhea, abdominal bloating, as well as nongastrointestinal symptoms, such as sleep deficiency, psychological distress, and daytime dysfunction. Sleep deficiency is a well-known issue that affects approximately 37.6% of the population with IBS.
+
+Poor sleep quality is a crucial modifiable risk factor for IBS symptom flare-ups, particularly abdominal pain. However, little is known about the roles of psychological distress and daytime dysfunction in the sleep-pain relationship in adults with IBS. Previous studies have suggested the indirect effect of sleep on pain through psychological distress; nonetheless, no studies have evaluated the indirect effect of sleep on pain through both psychological distress and daytime dysfunction. The purpose of this study is to examine the potential indirect effects of sleep on pain through psychological distress and/or daytime dysfunction using a structural equation modeling (SEM) approach among adults with IBS. SEM allows for the inclusion of multiple indicators and analyses of multiple relationships simultaneously.
+
+
 # Methods
-We report how we determined our sample size, all data exclusions (if any), all manipulations, and all measures in the study. <!-- 21-word solution (Simmons, Nelson & Simonsohn, 2012; retrieved from http://ssrn.com/abstract=2160588) -->
-
-## Participants
-
-## Material
-
-## Procedure
-
-## Data analysis
 
 ```{r analysis-preferences}
 # Seed for random number generation
@@ -80,7 +63,9 @@ set.seed(42)
 knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
 ```
 
-```{r data-preparation, include=FALSE}
+### Creating Sample-Covariance Matrix
+
+```{r data-preparation, echo=TRUE, tidy=T}
 # Declare vector with names of variables 
 full_names <- c("Abdominal pain", "Abdominal pain after eating", 
            "Abdominal distention", "Intestinal gas", 
@@ -96,53 +81,69 @@ names <- c("ab_pain", "ab_pain_after_eat",
 
 # Import correlation matrix 
 cor_matrix <- as.matrix(read_csv("../../files/data/cor_matrix.csv", col_names = FALSE))
-  
 
-# Declare vector with standard deviations for each variable 
+# Create vector with standard deviations for each variable 
 sds <- c(26.05, 26.01, 31.82, 
          30.05, 27.18, 27.15, 
          27.25, 25.79, 20.77, 
          22.41, 25.44, 16.51)
 
-
-# Convert correlation matrix to covariance matrix
+# Convert correlation matrix to covariance matrix using standard deviations
 cov_matrix <- cor2cov(cor_matrix, sds = sds, names = names)
 ```
 
-```{r model-specification, include=TRUE}
+### Model Specification
+
+#### Measurement Model
+
+```{r model-specification, echo=TRUE}
 
 measurement_model <- '
-  # latent variables ||  Y1 is measured by X1 + X2 + X3
+  # Latent variables ||  Y1 is measured by X1 + X2 + X3
+  
     abdominal_discomfort =~ ab_pain + ab_pain_after_eat + ab_dist + intest_gas
-    
     nightime_sleep =~ dim_sleep_qual + unrefresh_sleep
-    
     day_dysfunction =~ fatigue + sleepiness_day + hard_concent
-    
     psych_distress =~ anxiety + stress + dep_mood
     
-  # regressions || Y1 regressed on X1 
-  
-    psych_distress ~ nightime_sleep
-    day_dysfunction ~ nightime_sleep + psych_distress
-    abdominal_discomfort ~ day_dysfunction + nightime_sleep + psych_distress
-  
+    
+  # Covariances
+    
+    abdominal_discomfort ~~ nightime_sleep
+    abdominal_discomfort ~~ day_dysfunction
+    abdominal_discomfort ~~ psych_distress
+    nightime_sleep ~~ day_dysfunction
+    nightime_sleep ~~ psych_distress
+    day_dysfunction ~~ psych_distress
+    
+
+    
 '
 
-fit <- sem(sleep.model, 
+fit <- sem(measurement_model, 
            sample.cov = cov_matrix, 
            sample.nobs = 332)
 summary(fit, standardized = TRUE)
 
+# 
+#   # Regressions || Y1 regressed on X1 
+#   
+#     psych_distress ~ nightime_sleep
+#     day_dysfunction ~ nightime_sleep + psych_distress
+#     abdominal_discomfort ~ day_dysfunction + nightime_sleep + psych_distress
+
+
+
 ```
 
-```{r}
-med.model <- '   
+```{r, include=TRUE}
+int_structural_model <- '   
   # latent variables ||  Y1 is measured by X1 + X2 + X3
     abdominal_discomfort =~ ab_pain + ab_pain_after_eat + ab_dist + intest_gas
     nightime_sleep =~ dim_sleep_qual + unrefresh_sleep
     day_dysfunction =~ fatigue + sleepiness_day + hard_concent
     psych_distress =~ anxiety + stress + dep_mood
+  
   # mediation
   ## outcome model 
   abdominal_discomfort  ~ c*nightime_sleep + b1*psych_distress + b2*day_dysfunction
@@ -179,10 +180,10 @@ med.model <- '
 # psych_distress ~~ day_dysfunction # model correlation between mediators
 # '
 
-med.fit <- sem(med.model, 
+initial_fit <- sem(int_structural_model, 
            sample.cov = cov_matrix, 
            sample.nobs = 332)
-summary(med.fit, fit.measures = TRUE, standardized = TRUE, rsquare = TRUE)
+summary(initial_fit, fit.measures = TRUE, standardized = TRUE, rsquare = TRUE)
 
 
 ```
@@ -190,7 +191,7 @@ summary(med.fit, fit.measures = TRUE, standardized = TRUE, rsquare = TRUE)
 
 
 
-We used `r cite_r("r-references.bib")` for all our analyses.
+I used `r cite_r("r-references.bib")` for all analyses.
 
 
 # Results
